@@ -1,0 +1,18 @@
+{
+  "name": "tomodachi-chat",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A chat app with API-key failover and response caching.",
+  "scripts": {
+    "start": "node server.js",
+    "start:frontend": "node scripts/serve-frontend.js",
+    "build:frontend": "node scripts/build-frontend.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.4.1"
+  },
+  "engines": {
+    "node": ">=20.12"
+  }
+}

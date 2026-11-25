@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4f0">
+    <meta name="description" content="A thoughtful AI chat, made for your everyday conversations.">
+    <title>Tomodachi — your AI companion</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/config.js"></script>
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="Tomodachi home">
+          <span class="brand-mark" aria-hidden="true">t.</span>
+          <span>tomodachi</span>
+        </a>
+        <button class="new-chat" id="new-chat" type="button">
+          <span aria-hidden="true">＋</span> New conversation
+        </button>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-note">
+          <span class="note-icon" aria-hidden="true">✳</span>
+          <p>A little help, whenever you need it.</p>
+        </div>
+        <div class="profile">
+          <span class="avatar" aria-hidden="true">Y</span>
+          <span class="profile-name">Your space</span>
+          <span class="local-badge">PRIVATE</span>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="mobile-brand"><span class="brand-mark" aria-hidden="true">t.</span> tomodachi</div>
+          <div class="model-indicator"><span class="status-dot"></span><span id="model-label">AI companion</span></div>
+          <button class="clear-button" id="clear-chat" type="button" aria-label="Clear conversation">Clear chat</button>
+        </header>
+
+        <section class="conversation" id="conversation" aria-live="polite" aria-label="Conversation">
+          <div class="welcome" id="welcome">
+            <div class="welcome-sparkle" aria-hidden="true">✳</div>
+            <p class="eyebrow">YOUR EVERYDAY COMPANION</p>
+            <h1>Good ideas start<br>with a <span>conversation.</span></h1>
+            <p class="welcome-copy">Ask a question, work through an idea, or just see where the conversation goes.</p>
+            <div class="suggestions" aria-label="Try asking">
+              <button class="suggestion" type="button" data-prompt="Help me plan a calm, productive morning."><span>☀</span> Plan a better morning</button>
+              <button class="suggestion" type="button" data-prompt="Explain a tricky idea in a simple way."><span>⌘</span> Explain something simply</button>
+              <button class="suggestion" type="button" data-prompt="Help me brainstorm a thoughtful birthday gift."><span>✧</span> Find a thoughtful gift</button>
+            </div>
+          </div>
+          <div class="messages" id="messages"></div>
+        </section>
+
+        <div class="composer-area">
+          <details class="system-prompt-settings" id="system-prompt-settings">
+            <summary>Customize this conversation</summary>
+            <label for="system-prompt">System prompt <span>OPTIONAL</span></label>
+            <textarea id="system-prompt" data-testid="system-prompt-input" maxlength="4000" rows="3" placeholder="Give Tomodachi extra guidance for this conversation..."></textarea>
+            <p>Saved in this browser and used for each reply in this conversation.</p>
+          </details>
+          <form class="composer" id="chat-form">
+            <label class="sr-only" for="prompt">Message Tomodachi</label>
+            <textarea id="prompt" name="prompt" data-testid="chat-input" rows="1" placeholder="Message Tomodachi..." maxlength="4000" required></textarea>
+            <div class="composer-footer">
+              <span class="composer-hint">Just ask — Tomodachi is here to help.</span>
+              <button class="send-button" id="send-button" data-testid="send-button" type="submit" aria-label="Send message">
+                <span>Send</span><span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </form>
+          <p class="fine-print">Tomodachi can make mistakes. Check important information.</p>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

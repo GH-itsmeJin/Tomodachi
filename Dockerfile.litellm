@@ -1,0 +1,7 @@
+FROM ghcr.io/berriai/litellm:main-stable
+
+WORKDIR /app
+COPY litellm_entrypoint.py /app/litellm_entrypoint.py
+
+EXPOSE 4000
+ENTRYPOINT ["python", "/app/litellm_entrypoint.py"]

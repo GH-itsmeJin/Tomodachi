@@ -1,0 +1,52 @@
+services:
+  - type: web
+    name: tomodachi-litellm
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile.litellm
+    dockerContext: .
+    healthCheckPath: /health/liveliness
+    envVars:
+      - key: LITELLM_MASTER_KEY
+        sync: false
+      - key: OPENAI_API_KEYS
+        sync: false
+      - key: LITELLM_PROVIDER_MODEL
+        value: openai/gpt-4o-mini
+  - type: web
+    name: tomodachi-backend
+    runtime: node
+    plan: starter
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    disk:
+      name: tomodachi-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: LITELLM_BASE_URL
+        value: http://tomodachi-litellm:4000/v1
+      - key: LITELLM_API_KEY
+        sync: false
+      - key: LITELLM_MODEL
+        value: tomodachi
+      - key: LITELLM_TIMEOUT_MS
+        value: "45000"
+      - key: DATABASE_URL
+        value: /data/app.db
+      - key: FRONTEND_ORIGIN
+        value: https://tomodachi-frontend.onrender.com
+      - key: ENABLE_FAILURE_SIMULATION
+        value: "true"
+  - type: web
+    name: tomodachi-frontend
+    runtime: static
+    buildCommand: npm run build:frontend
+    staticPublishPath: ./dist
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          type: web
+          name: tomodachi-backend
+          property: host

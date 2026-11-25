@@ -1,0 +1,46 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        BACKEND_URL: ${BACKEND_URL:-http://localhost:8000}
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      - tomodachi
+    restart: unless-stopped
+
+  litellm:
+    build:
+      context: .
+      dockerfile: Dockerfile.litellm
+    environment:
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:?Set LITELLM_MASTER_KEY in .env}
+      OPENAI_API_KEYS: ${OPENAI_API_KEYS:?Set at least two comma-separated keys in .env}
+      LITELLM_PROVIDER_MODEL: ${LITELLM_PROVIDER_MODEL:-openai/gpt-4o-mini}
+      LITELLM_PORT: ${LITELLM_PORT:-4000}
+    ports:
+      - "${LITELLM_PORT:-4000}:${LITELLM_PORT:-4000}"
+    restart: unless-stopped
+
+  tomodachi:
+    build: .
+    environment:
+      PORT: ${BACKEND_PORT:-8000}
+      DATABASE_URL: /data/app.db
+      LITELLM_BASE_URL: http://litellm:${LITELLM_PORT:-4000}/v1
+      LITELLM_MODEL: tomodachi
+      LITELLM_API_KEY: ${LITELLM_MASTER_KEY:?Set LITELLM_MASTER_KEY in .env}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000}
+      ENABLE_FAILURE_SIMULATION: ${ENABLE_FAILURE_SIMULATION:-false}
+    depends_on:
+      - litellm
+    ports:
+      - "${BACKEND_PORT:-8000}:${BACKEND_PORT:-8000}"
+    volumes:
+      - tomodachi-data:/data
+    restart: unless-stopped
+
+volumes:
+  tomodachi-data:
